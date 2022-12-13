@@ -66,6 +66,11 @@
       <string>Результат</string>
      </property>
     </column>
+    <column>
+     <property name="text">
+      <string>Логин</string>
+     </property>
+    </column>
    </widget>
   </widget>
  </widget>

@@ -1,6 +1,7 @@
 import sys
 import csv
 
+from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidgetItem
 from PyQt5 import uic
 
@@ -61,13 +62,25 @@ class Example(QMainWindow):
                 school, grade = map(int, (a[2], a[3]))
                 if (school == selected_school or selected_school == 'Все') and \
                         (grade == selected_grade or selected_grade == 'Все'):
-                    ans.append((name.split()[3], int(score)))
+                    ans.append((name.split()[3], int(score), name))
         ans.sort(key=lambda item: (item[1], item[0]), reverse=True)
         self.table_results.setRowCount(len(ans))
         for i, row in enumerate(ans):
             for j, col in enumerate(row):
                 self.table_results.setItem(i, j, QTableWidgetItem(str(col)))
         self.table_results.resizeColumnsToContents()
+        colors = [QColor(224, 214, 0), QColor(180, 181, 189), QColor(155, 81, 32)]
+        k = 0
+        prev = self.table_results.item(0, 1).text()
+        for i in range(self.table_results.rowCount()):
+            result = self.table_results.item(i, 1).text()
+            if result != prev:
+                k += 1
+            if k == len(colors):
+                break
+            for j in range(self.table_results.columnCount()):
+                self.table_results.item(i, j).setBackground(colors[k])
+            prev = result
 
 
 def except_hook(cls, exception, traceback):
