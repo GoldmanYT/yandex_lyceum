@@ -6,6 +6,25 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidgetItem
 from PyQt5 import uic
 
 
+'''import csv
+
+school, grade = map(int, input().split())
+ans = []
+with open('rez.csv', 'r', encoding='utf8') as f:
+    reader = csv.DictReader(f, delimiter=',', quotechar='"')
+    for d in reader:
+        name, login, score = d['user_name'], d['login'], d['Score']
+        a = login.split('-')
+        _school, _grade = map(int, (a[2], a[3]))
+        if school == _school and grade == _grade:
+            ans.append((name.split()[3], int(score)))
+ans.sort(key=lambda item: (item[1], item[0]), reverse=True)
+
+for i in ans:
+    print(*i)
+'''
+
+
 class Example(QMainWindow):
     def __init__(self):
         super().__init__()
