@@ -11,22 +11,42 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Поиск на Титанике</string>
+   <string>Интерактивный чек</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
-     <widget class="QLabel" name="label">
-      <property name="text">
-       <string>Подстрока для поиска:</string>
+    <item row="1" column="1">
+     <widget class="QLineEdit" name="result">
+      <property name="readOnly">
+       <bool>true</bool>
       </property>
      </widget>
     </item>
-    <item row="0" column="1">
-     <widget class="QLineEdit" name="le_search"/>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>Итого:</string>
+      </property>
+     </widget>
     </item>
-    <item row="1" column="0" colspan="2">
-     <widget class="QTableWidget" name="table"/>
+    <item row="0" column="0" colspan="2">
+     <widget class="QTableWidget" name="table">
+      <column>
+       <property name="text">
+        <string>Название</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Цена</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Количество</string>
+       </property>
+      </column>
+     </widget>
     </item>
    </layout>
   </widget>
