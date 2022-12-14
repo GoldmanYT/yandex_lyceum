@@ -1,7 +1,7 @@
 import sys
 import sqlite3
 
-from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidgetItem
 from PyQt5 import uic
 
 
@@ -9,35 +9,34 @@ class Example(QMainWindow):
     def __init__(self):
         super().__init__()
         uic.loadUi('UI.ui', self)
-        self.btn_search.clicked.connect(self.get_data)
+        self.load_genres()
+        self.btn_update.clicked.connect(self.get_data)
 
-    def get_data(self):
-        param = self.cb.currentText()
-        k = {
-            'Год выпуска': ('year', int),
-            'Название': ('title', str),
-            'Продолжительность': ('duration', int)
-        }
-        param, param_type = k.get(param)
-        value = self.le_search.text()
+    def load_genres(self):
         connection = sqlite3.connect('films_db.sqlite')
         cursor = connection.cursor()
-        try:
-            if type(value) != param_type:
-                value = param_type(value)
-            result = cursor.execute(f'''
-            SELECT id, title, year, genre, duration FROM films
-            WHERE {param} = "{value}"
-            ''').fetchall()
-            if not result:
-                self.lb_error.setText('Ничего не найдено')
-            else:
-                self.lb_error.setText('')
-                data = result[0]
-                for s, widget in zip(data, (self.le_id, self.le_name, self.le_year, self.le_genre, self.le_duration)):
-                    widget.setText(str(s))
-        except Exception:
-            self.lb_error.setText('Неправильный запрос')
+        result = cursor.execute('''
+        SELECT title FROM genres
+        ''').fetchall()
+        for s in result:
+            self.cb_genres.addItem(s[0])
+
+    def get_data(self):
+        genre = self.cb_genres.currentText()
+        connection = sqlite3.connect('films_db.sqlite')
+        cursor = connection.cursor()
+        result = cursor.execute(f'''
+        SELECT title, genre, year FROM films
+        WHERE genre IN (
+        SELECT id FROM genres
+        WHERE title = "{genre}"
+        )
+        ''').fetchall()
+        self.table.setRowCount(len(result))
+        self.table.setColumnCount(len(result[0]))
+        for i, row in enumerate(result):
+            for j, col in enumerate(row):
+                self.table.setItem(i, j, QTableWidgetItem(str(col)))
 
 
 def except_hook(cls, exception, traceback):
