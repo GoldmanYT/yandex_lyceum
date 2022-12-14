@@ -1,9 +1,7 @@
 import sys
-import csv
+import sqlite3
 
-from random import randint
-from PyQt5.QtGui import QColor
-from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidgetItem
+from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5 import uic
 
 
@@ -11,37 +9,35 @@ class Example(QMainWindow):
     def __init__(self):
         super().__init__()
         uic.loadUi('UI.ui', self)
-        self.load_table()
-        self.compute()
-        self.update_colors()
-        self.table.itemSelectionChanged.connect(self.compute)
-        self.btn_update.clicked.connect(self.update_colors)
+        self.btn_search.clicked.connect(self.get_data)
 
-    def load_table(self):
-        ans = []
-        with open('price.csv', 'r', encoding='utf8') as f:
-            reader = csv.DictReader(f, delimiter=';', quotechar='"')
-            for d in reader:
-                ans.append(tuple([d[i] for i in d] + [0]))
-        ans.sort(key=lambda x: x[1], reverse=True)
-        self.table.setRowCount(len(ans))
-        for i, row in enumerate(ans):
-            for j, col in enumerate(row):
-                self.table.setItem(i, j, QTableWidgetItem(str(col)))
-        self.table.resizeColumnsToContents()
-
-    def compute(self):
-        s = 0
-        for i in range(self.table.rowCount()):
-            p, c = map(int, (self.table.item(i, 1).text(), self.table.item(i, 2).text()))
-            s += p * c
-        self.result.setText(str(s))
-
-    def update_colors(self):
-        for i in range(min(5, self.table.rowCount())):
-            color = QColor(randint(0, 255), randint(0, 255), randint(0, 255))
-            for j in range(self.table.columnCount()):
-                self.table.item(i, j).setBackground(color)
+    def get_data(self):
+        param = self.cb.currentText()
+        k = {
+            'Год выпуска': ('year', int),
+            'Название': ('title', str),
+            'Продолжительность': ('duration', int)
+        }
+        param, param_type = k.get(param)
+        value = self.le_search.text()
+        connection = sqlite3.connect('films_db.sqlite')
+        cursor = connection.cursor()
+        try:
+            if type(value) != param_type:
+                value = param_type(value)
+            result = cursor.execute(f'''
+            SELECT id, title, year, genre, duration FROM films
+            WHERE {param} = "{value}"
+            ''').fetchall()
+            if not result:
+                self.lb_error.setText('Ничего не найдено')
+            else:
+                self.lb_error.setText('')
+                data = result[0]
+                for s, widget in zip(data, (self.le_id, self.le_name, self.le_year, self.le_genre, self.le_duration)):
+                    widget.setText(str(s))
+        except Exception:
+            self.lb_error.setText('Неправильный запрос')
 
 
 def except_hook(cls, exception, traceback):
