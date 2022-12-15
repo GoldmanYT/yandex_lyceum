@@ -38,7 +38,7 @@ class Minesweeper(Board):
             x, y = randint(0, self.w - 1), randint(0, self.h - 1)
             self.board[y][x] = 10
 
-    def place(self, x, y):
+    def open_cell(self, x, y):
         if not self.on_board(x, y) or self.board[y][x] == 10:
             return
         self.board[y][x] = self.mines_count(x, y)
@@ -68,7 +68,7 @@ while run:
                 mouse_x, mouse_y = event.pos
                 x, y = ((mouse_x - minesweeper.left) // minesweeper.cell_size,
                         (mouse_y - minesweeper.top) // minesweeper.cell_size)
-                minesweeper.place(x, y)
+                minesweeper.open_cell(x, y)
 
     minesweeper.draw()
     pg.display.flip()
