@@ -41,7 +41,14 @@ class Minesweeper(Board):
     def open_cell(self, x, y):
         if not self.on_board(x, y) or self.board[y][x] == 10:
             return
-        self.board[y][x] = self.mines_count(x, y)
+        mines = self.mines_count(x, y)
+        pos = self.board[y][x]
+        self.board[y][x] = mines
+        if not mines and pos != 0:
+            directions = (-1, 0), (0, -1), (0, 1), (1, 0), (-1, -1), (-1, 1), (1, -1), (1, 1)
+            for dx, dy in directions:
+                if self.on_board(x + dx, y + dy):
+                    self.open_cell(x + dx, y + dy)
 
     def mines_count(self, x, y):
         directions = (-1, 0), (0, -1), (0, 1), (1, 0), (-1, -1), (-1, 1), (1, -1), (1, 1)
@@ -51,7 +58,7 @@ class Minesweeper(Board):
 
 pg.init()
 
-pg.display.set_caption('Дедушка сапёра')
+pg.display.set_caption('Папа сапёра')
 screen = pg.display.set_mode((320, 470))
 clock = pg.time.Clock()
 run = True
