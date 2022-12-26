@@ -1,55 +1,58 @@
-import pygame
+import pygame as pg
 
 
-pygame.init()
-width, height = 729, 300
+class Player(pg.Rect):
+    def __init__(self, x, y):
+        super().__init__(self.x, self.y, 20, 20)
+        self.x, self.y = x, y
+        self.rect = pg.Rect((self.x, self.y, 20, 20))
+
+    def move_to(self, x, y):
+        self.x, self.y = x, y
+
+    def move(self, dx, dy):
+        self.x += dx * 10
+        self.y += dy * 50
+
+    def draw(self):
+        pg.draw.rect(screen, 'blue', (self.x, self.y, 20, 20))
 
 
-class Mountain(pygame.sprite.Sprite):
-    image = pygame.image.load('mountains.png')
+class Platform(pg.Rect):
+    def __init__(self, x, y):
+        super().__init__(self.x, self.y, 50, 10)
+        self.x, self.y = x, y
 
-    def __init__(self):
-        super().__init__(all_sprites)
-        self.image = Mountain.image
-        self.rect = self.image.get_rect()
-        self.mask = pygame.mask.from_surface(self.image)
-        self.rect.bottom = height
+    def draw(self):
+        pg.draw.rect(screen, 'gray', (self.x, self.y, 50, 10))
 
 
-class Landing(pygame.sprite.Sprite):
-    image = pygame.image.load("pt.png")
+pg.init()
 
-    def __init__(self, pos):
-        super().__init__(all_sprites)
-        self.image = Landing.image
-        self.rect = self.image.get_rect()
-        self.mask = pygame.mask.from_surface(self.image)
-        self.rect.x = pos[0]
-        self.rect.y = pos[1]
+player = None
+platforms = []
 
-    def update(self):
-        if not pygame.sprite.collide_mask(self, mountain):
-            self.rect = self.rect.move(0, 1)
-
-
-all_sprites = pygame.sprite.Group()
-mountain = Mountain()
-
-pygame.display.set_caption('Высадка десанта')
-screen = pygame.display.set_mode((width, height))
-clock = pygame.time.Clock()
+pg.display.set_caption('Платформы')
+screen = pg.display.set_mode((500, 500))
+clock = pg.time.Clock()
 run = True
-FPS = 60
 
 while run:
-    screen.fill('black')
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
+    for event in pg.event.get():
+        if event.type == pg.QUIT:
             run = False
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            Landing(event.pos)
+        elif event.type == pg.MOUSEBUTTONDOWN:
+            if event.button == 1:
+                platforms.append(Platform(*event.pos))
+            elif event.button == 3:
+                player = Player(*event.pos)
 
-    all_sprites.draw(screen)
-    all_sprites.update()
-    pygame.display.flip()
-    clock.tick(FPS)
+    screen.fill('black')
+
+    if player is not None:
+        player.draw()
+    for platform in platforms:
+        platform.draw()
+
+    pg.display.flip()
+    clock.tick(60)
