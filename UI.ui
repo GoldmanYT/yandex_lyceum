@@ -6,60 +6,34 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>600</width>
+    <height>450</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Фильмотека</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPlainTextEdit" name="mask">
+   <widget class="QPushButton" name="btn_add">
     <property name="geometry">
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>104</width>
-      <height>71</height>
-     </rect>
-    </property>
-    <property name="plainText">
-     <string>id = 11</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="btn_find">
-    <property name="geometry">
-     <rect>
-      <x>120</x>
-      <y>30</y>
       <width>75</width>
       <height>23</height>
      </rect>
     </property>
     <property name="text">
-     <string>Запустить</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="btn_change">
-    <property name="geometry">
-     <rect>
-      <x>200</x>
-      <y>30</y>
-      <width>75</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Изменить</string>
+     <string>Добавить</string>
     </property>
    </widget>
    <widget class="QTableWidget" name="table">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>90</y>
-      <width>381</width>
-      <height>201</height>
+      <y>40</y>
+      <width>581</width>
+      <height>401</height>
      </rect>
     </property>
    </widget>

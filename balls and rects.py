@@ -35,14 +35,13 @@ class Ball:
                         (rect.right, self.y + (self.r ** 2 - (self.x - rect.right) ** 2) ** 0.5)]
             ver = [(x, y) for x, y in ver if rect.top <= y <= rect.bottom]
             points = hor + ver
-            if points:
-                if len(points) == 1:
-                    phi = 2 * pi
-                else:
-                    (x1, y1), (x2, y2) = points[:2]
-                    phi = atan2(y2 - y1, x2 - x1)
+            if points and len(points) >= 2:
+                (x1, y1), (x2, y2) = points[:2]
+                phi = atan2(y2 - y1, x2 - x1)
+                h1 = (phi - pi / 2) % (2 * pi)
+                h2 = (phi + pi / 2) % (2 * pi)
                 self.a = 2 * phi - self.a
-        self.a %= 2 * pi
+                self.a %= 2 * pi
 
     def draw(self):
         pg.draw.circle(screen, 'white', (self.x, self.y), self.r)
@@ -61,10 +60,10 @@ def draw():
         ball.draw()
 
 
-rects.append(pg.Rect(0, 0, W, 0))
-rects.append(pg.Rect(0, H, W, 0))
-rects.append(pg.Rect(0, 0, 0, H))
-rects.append(pg.Rect(W, 0, 0, H))
+rects.append(pg.Rect(-10, -10, W + 10, 10))
+rects.append(pg.Rect(W, -10, 10, H + 10))
+rects.append(pg.Rect(0, H, W + 10, 10))
+rects.append(pg.Rect(-10, 0, 10, H))
 rects.append(pg.Rect(100, 100, 300, 100))
 run = True
 screen = pg.display.set_mode((W, H))
