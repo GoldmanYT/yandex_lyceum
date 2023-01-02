@@ -11,14 +11,14 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Добавить эелемент</string>
+   <string>Добавление записи</string>
   </property>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>9</x>
-     <y>34</y>
-     <width>48</width>
+     <x>10</x>
+     <y>10</y>
+     <width>71</width>
      <height>16</height>
     </rect>
    </property>
@@ -26,22 +26,12 @@
     <string>Название</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="le_title">
-   <property name="geometry">
-    <rect>
-     <x>80</x>
-     <y>34</y>
-     <width>311</width>
-     <height>20</height>
-    </rect>
-   </property>
-  </widget>
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>9</x>
-     <y>85</y>
-     <width>65</width>
+     <x>10</x>
+     <y>40</y>
+     <width>81</width>
      <height>16</height>
     </rect>
    </property>
@@ -49,22 +39,12 @@
     <string>Год выпуска</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="le_year">
-   <property name="geometry">
-    <rect>
-     <x>80</x>
-     <y>85</y>
-     <width>311</width>
-     <height>20</height>
-    </rect>
-   </property>
-  </widget>
   <widget class="QLabel" name="label_3">
    <property name="geometry">
     <rect>
-     <x>9</x>
-     <y>136</y>
-     <width>28</width>
+     <x>10</x>
+     <y>70</y>
+     <width>101</width>
      <height>16</height>
     </rect>
    </property>
@@ -72,60 +52,70 @@
     <string>Жанр</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="cb_genre">
-   <property name="geometry">
-    <rect>
-     <x>80</x>
-     <y>136</y>
-     <width>311</width>
-     <height>20</height>
-    </rect>
-   </property>
-  </widget>
   <widget class="QLabel" name="label_4">
    <property name="geometry">
     <rect>
-     <x>9</x>
-     <y>187</y>
-     <width>32</width>
+     <x>10</x>
+     <y>100</y>
+     <width>111</width>
      <height>16</height>
     </rect>
    </property>
    <property name="text">
-    <string>Длина</string>
+    <string>Продолжительность</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="le_duration">
    <property name="geometry">
     <rect>
-     <x>80</x>
-     <y>187</y>
-     <width>311</width>
+     <x>120</x>
+     <y>100</y>
+     <width>271</width>
      <height>20</height>
     </rect>
    </property>
   </widget>
-  <widget class="QPushButton" name="btn_add">
+  <widget class="QLineEdit" name="le_year">
    <property name="geometry">
     <rect>
-     <x>280</x>
-     <y>250</y>
+     <x>120</x>
+     <y>40</y>
+     <width>271</width>
+     <height>20</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="le_title">
+   <property name="geometry">
+    <rect>
+     <x>120</x>
+     <y>10</y>
+     <width>271</width>
+     <height>20</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="cb_genre">
+   <property name="geometry">
+    <rect>
+     <x>120</x>
+     <y>70</y>
+     <width>271</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btn_save">
+   <property name="geometry">
+    <rect>
+     <x>320</x>
+     <y>270</y>
      <width>75</width>
-     <height>31</height>
+     <height>23</height>
     </rect>
    </property>
    <property name="text">
-    <string>Добавить</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="lb_error">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>250</y>
-     <width>261</width>
-     <height>31</height>
-    </rect>
+    <string>Сохранить</string>
    </property>
   </widget>
  </widget>

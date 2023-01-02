@@ -14,28 +14,161 @@
    <string>Фильмотека</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="btn_add">
+   <widget class="QTabWidget" name="tabWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>75</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Добавить</string>
-    </property>
-   </widget>
-   <widget class="QTableWidget" name="table">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>40</y>
       <width>581</width>
-      <height>401</height>
+      <height>431</height>
      </rect>
     </property>
+    <property name="currentIndex">
+     <number>0</number>
+    </property>
+    <widget class="QWidget" name="tab_films">
+     <attribute name="title">
+      <string>Фильмы</string>
+     </attribute>
+     <widget class="QPushButton" name="btn_add_film">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>10</y>
+        <width>101</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Добавить фильм</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_edit_film">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>10</y>
+        <width>101</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Изменить фильм</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_delete_film">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>10</y>
+        <width>101</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Удалить фильм</string>
+      </property>
+     </widget>
+     <widget class="QTableWidget" name="table_films">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>40</y>
+        <width>571</width>
+        <height>351</height>
+       </rect>
+      </property>
+      <column>
+       <property name="text">
+        <string>ИД</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Название фильма</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Год выпуска</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Жанр</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Продолжительность</string>
+       </property>
+      </column>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_genres">
+     <attribute name="title">
+      <string>Жанры</string>
+     </attribute>
+     <widget class="QPushButton" name="btn_add_genre">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>10</y>
+        <width>91</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Добавить жанр</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_edit_genre">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>10</y>
+        <width>121</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Редактировать жанр</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_delete_genre">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>10</y>
+        <width>81</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Удалить жанр</string>
+      </property>
+     </widget>
+     <widget class="QTableWidget" name="table_genres">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>40</y>
+        <width>571</width>
+        <height>361</height>
+       </rect>
+      </property>
+      <column>
+       <property name="text">
+        <string>ИД</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Название жанра</string>
+       </property>
+      </column>
+     </widget>
+    </widget>
    </widget>
   </widget>
  </widget>
