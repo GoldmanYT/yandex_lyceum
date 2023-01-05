@@ -6,31 +6,34 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>300</width>
-    <height>300</height>
+    <width>500</width>
+    <height>500</height>
    </rect>
   </property>
+  <property name="mouseTracking">
+   <bool>true</bool>
+  </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Убегающая кнопка</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="mouseTracking">
     <bool>true</bool>
    </property>
-   <widget class="QLabel" name="ufo">
+   <widget class="QPushButton" name="btn">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>10</y>
+      <x>180</x>
+      <y>200</y>
       <width>91</width>
-      <height>91</height>
+      <height>41</height>
      </rect>
     </property>
-    <property name="text">
-     <string/>
+    <property name="mouseTracking">
+     <bool>true</bool>
     </property>
-    <property name="alignment">
-     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+    <property name="text">
+     <string>Нажми меня</string>
     </property>
    </widget>
   </widget>
