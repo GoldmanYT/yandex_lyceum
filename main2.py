@@ -1,70 +1,147 @@
 import sys
-import sqlite3
 
-from PyQt5 import uic
+from PyQt5 import uic, QtCore, QtMultimedia
+from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget
+from PyQt5.QtWidgets import QApplication, QMainWindow
 
 
 class MyWidget(QMainWindow):
     def __init__(self):
         super().__init__()
         uic.loadUi('UI.ui', self)
-        self.con = sqlite3.connect('library_db.sqlite')
-        self.btn.clicked.connect(self.find_result)
-        self.lw.itemActivated.connect(self.show_info)
-        cur = self.con.cursor()
-        self.genres = dict(cur.execute('''SELECT id, title FROM genres''').fetchall())
-        self.authors = dict(cur.execute('''SELECT id, title FROM authors''').fetchall())
-        self.images = dict(cur.execute('''SELECT id, img_path FROM images''').fetchall())
-        self.results = []
-        self.info_widget = None
+        abs_path = '/Users/DEXP/PycharmProjects/yandex_lyceum/'
+        self.players = {}
+        self.keys = {self.a1: 'A', self.a_1: 'A#', self.b1: 'B', self.c1: 'C', self.c_1: 'C#', self.d1: 'D',
+                     self.d_1: 'D#', self.e1: 'E', self.f1: 'F', self.f_1: 'F#', self.g1: 'G', self.g_1: 'G#'}
+        self.load_media(abs_path)
+        self.w1 = QPixmap('data/white1.png')
+        self.w2 = QPixmap('data/white2.png')
+        self.w3 = QPixmap('data/white3.png')
+        self.b = QPixmap('data/black.png')
+        self.w1_p = QPixmap('data/white1_p.png')
+        self.w2_p = QPixmap('data/white2_p.png')
+        self.w3_p = QPixmap('data/white3_p.png')
+        self.b_p = QPixmap('data/black_p.png')
+        for key in (self.c_1, self.d_1, self.f_1, self.g_1, self.a_1, self.c1, self.f1, self.d1, self.g1, self.a1,
+                    self.e1, self.b1):
+            self.release(key)
+        self.mouse_pressed = False
+        self.pressed = None
 
-    def show_info(self, item):
-        index = None
-        for i, result in enumerate(self.results):
-            if result[0] == item.text():
-                index = i
+    def load_media(self, path):
+        path += 'data/'
+        keys = ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#']
+        for key in keys:
+            media = QtCore.QUrl.fromLocalFile(path + key + '.mp3')
+            content = QtMultimedia.QMediaContent(media)
+            self.players[key] = QtMultimedia.QMediaPlayer()
+            self.players[key].setMedia(content)
+
+    def press(self, key):
+        self.players[self.keys.get(key)].stop()
+        self.players[self.keys.get(key)].play()
+        if key in (self.c1, self.f1):
+            key.setPixmap(self.w1_p)
+        if key in (self.d1, self.g1, self.a1):
+            key.setPixmap(self.w2_p)
+        if key in (self.e1, self.b1):
+            key.setPixmap(self.w3_p)
+        if key in (self.c_1, self.d_1, self.f_1, self.g_1, self.a_1):
+            key.setPixmap(self.b_p)
+
+    def release(self, key):
+        # self.players[self.keys.get(key)].stop()
+        if key in (self.c1, self.f1):
+            key.setPixmap(self.w1)
+        if key in (self.d1, self.g1, self.a1):
+            key.setPixmap(self.w2)
+        if key in (self.e1, self.b1):
+            key.setPixmap(self.w3)
+        if key in (self.c_1, self.d_1, self.f_1, self.g_1, self.a_1):
+            key.setPixmap(self.b)
+
+    def mousePressEvent(self, event):
+        x, y = event.x(), event.y()
+        for key in (self.c_1, self.d_1, self.f_1, self.g_1, self.a_1, self.c1, self.f1, self.d1, self.g1, self.a1,
+                    self.e1, self.b1):
+            x0, y0, w, h = key.x(), key.y(), key.width(), key.height()
+            if x0 <= x <= x0 + w and y0 <= y <= y0 + h:
+                self.mouse_pressed = True
+                self.pressed = key
+                self.press(key)
                 break
-        if index is None:
-            return
-        title, author_id, year, genre_id, img_id = self.results[index]
-        author = self.authors.get(author_id)
-        genre = self.genres.get(genre_id)
-        img_path = self.images.get(img_id, self.images.get(1))
-        self.info_widget = InfoWidget(title, author, year, genre, img_path)
-        self.info_widget.show()
 
-    def find_result(self):
-        cur = self.con.cursor()
-        text = self.le.text()
-        if self.cb.currentText() == 'Автор':
-            data = cur.execute(f'''SELECT title, author, year, genre, img FROM books
-                                   WHERE author IN (
-                                   SELECT id FROM authors
-                                   WHERE title LIKE "{text}%"
-                                   )
-                                   ''').fetchall()
-        else:
-            data = cur.execute(f'''SELECT title, author, year, genre, img FROM books
-                                   WHERE title LIKE "{text}%"
-                                   ''').fetchall()
-        self.results = data
-        self.lw.clear()
-        for result in data:
-            self.lw.addItem(result[0])
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key_Z:
+            self.press(self.c1)
+        if event.key() == Qt.Key_S:
+            self.press(self.c_1)
+        if event.key() == Qt.Key_X:
+            self.press(self.d1)
+        if event.key() == Qt.Key_D:
+            self.press(self.d_1)
+        if event.key() == Qt.Key_C:
+            self.press(self.e1)
+        if event.key() == Qt.Key_V:
+            self.press(self.f1)
+        if event.key() == Qt.Key_G:
+            self.press(self.f_1)
+        if event.key() == Qt.Key_B:
+            self.press(self.g1)
+        if event.key() == Qt.Key_H:
+            self.press(self.g_1)
+        if event.key() == Qt.Key_N:
+            self.press(self.a1)
+        if event.key() == Qt.Key_J:
+            self.press(self.a_1)
+        if event.key() == Qt.Key_M:
+            self.press(self.b1)
 
+    def keyReleaseEvent(self, event):
+        if event.key() == Qt.Key_Z:
+            self.release(self.c1)
+        if event.key() == Qt.Key_S:
+            self.release(self.c_1)
+        if event.key() == Qt.Key_X:
+            self.release(self.d1)
+        if event.key() == Qt.Key_D:
+            self.release(self.d_1)
+        if event.key() == Qt.Key_C:
+            self.release(self.e1)
+        if event.key() == Qt.Key_V:
+            self.release(self.f1)
+        if event.key() == Qt.Key_G:
+            self.release(self.f_1)
+        if event.key() == Qt.Key_B:
+            self.release(self.g1)
+        if event.key() == Qt.Key_H:
+            self.release(self.g_1)
+        if event.key() == Qt.Key_N:
+            self.release(self.a1)
+        if event.key() == Qt.Key_J:
+            self.release(self.a_1)
+        if event.key() == Qt.Key_M:
+            self.release(self.b1)
 
-class InfoWidget(QWidget):
-    def __init__(self, title, author, year, genre, img_path):
-        super().__init__()
-        uic.loadUi('info.ui', self)
-        self.lb_title.setText(title)
-        self.lb_author.setText(author)
-        self.lb_year.setText(str(year))
-        self.lb_genre.setText(genre)
-        self.img_pixmap = QPixmap(img_path)
-        self.img.setPixmap(self.img_pixmap)
+    def mouseMoveEvent(self, event):
+        if self.mouse_pressed:
+            x, y = event.x(), event.y()
+            for key in (self.c_1, self.d_1, self.f_1, self.g_1, self.a_1, self.c1, self.f1, self.d1, self.g1, self.a1,
+                        self.e1, self.b1):
+                x0, y0, w, h = key.x(), key.y(), key.width(), key.height()
+                if x0 <= x <= x0 + w and y0 <= y <= y0 + h:
+                    if self.pressed != key:
+                        released = self.pressed
+                        self.release(released)
+                        self.pressed = key
+                        self.press(key)
+                    break
+
+    def mouseReleaseEvent(self, event):
+        self.mouse_pressed = False
+        self.release(self.pressed)
+        self.pressed = None
 
 
 def except_hook(cls, exception, traceback):
