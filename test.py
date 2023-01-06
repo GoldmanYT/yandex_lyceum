@@ -1,49 +1,59 @@
 import sqlite3
 
-con = sqlite3.connect('countries_db.sqlite')
+con = sqlite3.connect('library_db.sqlite')
 cur = con.cursor()
 
-cur.execute('''CREATE TABLE IF NOT EXISTS languages(
+cur.execute('''CREATE TABLE IF NOT EXISTS genres(
     id INTEGER PRIMARY KEY UNIQUE NOT NULL,
     title STRING
 )
 ''')
 
-cur.execute('''INSERT INTO languages(title) VALUES
-    ("English"),
-    ("Russian"),
-    ("Chinese")
+cur.execute('''INSERT INTO genres(title) VALUES
+    ("Проза"),
+    ("Фантастика")
 ''')
 
-cur.execute('''CREATE TABLE IF NOT EXISTS flags(
+cur.execute('''CREATE TABLE IF NOT EXISTS authors(
+    id INTEGER PRIMARY KEY UNIQUE NOT NULL,
+    title STRING
+)
+''')
+
+cur.execute('''INSERT INTO authors(title) VALUES
+    ("Крапивин Владислав"),
+    ("Пушкин Александр")
+''')
+
+cur.execute('''CREATE TABLE IF NOT EXISTS images(
     id INTEGER PRIMARY KEY UNIQUE NOT NULL,
     img_path STRING
 )
 ''')
 
-cur.execute('''INSERT INTO flags(img_path) VALUES
-    ("data/Russian_flag.png"),
-    ("data/USA_flag.png"),
-    ("data/China_flag.png"),
-    ("data/UK_flag.png")
+cur.execute('''INSERT INTO images(img_path) VALUES
+    ("data/standard.png"),
+    ("data/img1.png"),
+    ("data/img2.png")
 ''')
 
-cur.execute('''CREATE TABLE IF NOT EXISTS countries(
+cur.execute('''CREATE TABLE IF NOT EXISTS books(
     id INTEGER PRIMARY KEY UNIQUE NOT NULL,
     title STRING,
-    language INTEGER,
+    author INTEGER,
     year INTEGER,
-    flag INTEGER,
-    FOREIGN KEY (language) REFERENCES languages(id),
-    FOREIGN KEY (flag) REFERENCES flags(id)
+    genre INTEGER,
+    img INTEGER,
+    FOREIGN KEY (author) REFERENCES authors(id),
+    FOREIGN KEY (genre) REFERENCES genres(id),
+    FOREIGN KEY (img) REFERENCES images(id)
 )
 ''')
 
-cur.execute('''INSERT INTO countries(title, language, year, flag) VALUES
-    ("Россия", 2, 1991, 1),
-    ("Китай", 3, 1949, 3),
-    ("США", 1, 1800, 2),
-    ("Великобритания", 1, 1707, 4)
+cur.execute('''INSERT INTO books(title, author, year, genre, img) VALUES
+    ("Трое с площади Карронад", 1, 1979, 1, 2),
+    ("Чоки-чок, или Рыцарь Прозрачного Кота", 1, 2002, 2, 3),
+    ("Повести Белкина", 2, 1830, 1, NULL)
 ''')
 
 con.commit()

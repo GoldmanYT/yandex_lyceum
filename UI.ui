@@ -6,37 +6,65 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>300</width>
-    <height>300</height>
+    <width>500</width>
+    <height>500</height>
    </rect>
   </property>
-  <property name="mouseTracking">
-   <bool>true</bool>
-  </property>
   <property name="windowTitle">
-   <string>Машинка</string>
+   <string>Каталог библиотеки</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <property name="mouseTracking">
-    <bool>true</bool>
-   </property>
-   <widget class="QLabel" name="car">
+   <widget class="QComboBox" name="cb">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>91</width>
-      <height>91</height>
+      <x>20</x>
+      <y>20</y>
+      <width>111</width>
+      <height>22</height>
      </rect>
     </property>
-    <property name="mouseTracking">
-     <bool>true</bool>
+    <item>
+     <property name="text">
+      <string>Автор</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Название</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QPushButton" name="btn">
+    <property name="geometry">
+     <rect>
+      <x>180</x>
+      <y>10</y>
+      <width>171</width>
+      <height>81</height>
+     </rect>
     </property>
     <property name="text">
-     <string/>
+     <string>Искать</string>
     </property>
-    <property name="alignment">
-     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+   </widget>
+   <widget class="QLineEdit" name="le">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>60</y>
+      <width>113</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QListWidget" name="lw">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>110</y>
+      <width>461</width>
+      <height>371</height>
+     </rect>
     </property>
    </widget>
   </widget>
