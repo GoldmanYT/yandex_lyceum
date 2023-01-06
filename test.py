@@ -1,28 +1,50 @@
-import sys
+import sqlite3
 
-from PyQt5.QtWidgets import QWidget, QApplication, QLabel
+con = sqlite3.connect('countries_db.sqlite')
+cur = con.cursor()
 
+cur.execute('''CREATE TABLE IF NOT EXISTS languages(
+    id INTEGER PRIMARY KEY UNIQUE NOT NULL,
+    title STRING
+)
+''')
 
-class Example(QWidget):
-    def __init__(self):
-        super().__init__()
-        self.initUI()
+cur.execute('''INSERT INTO languages(title) VALUES
+    ("English"),
+    ("Russian"),
+    ("Chinese")
+''')
 
-    def initUI(self):
-        self.setGeometry(300, 300, 300, 300)
-        self.setWindowTitle('Координаты')
-        self.setMouseTracking(True)
+cur.execute('''CREATE TABLE IF NOT EXISTS flags(
+    id INTEGER PRIMARY KEY UNIQUE NOT NULL,
+    img_path STRING
+)
+''')
 
-        self.coords = QLabel(self)
-        self.coords.setText("Координаты: None, None")
-        self.coords.move(30, 30)
+cur.execute('''INSERT INTO flags(img_path) VALUES
+    ("data/Russian_flag.png"),
+    ("data/USA_flag.png"),
+    ("data/China_flag.png"),
+    ("data/UK_flag.png")
+''')
 
-    def mouseMoveEvent(self, event):
-        self.coords.setText(f"Координаты: {event.x()}, {event.y()}")
+cur.execute('''CREATE TABLE IF NOT EXISTS countries(
+    id INTEGER PRIMARY KEY UNIQUE NOT NULL,
+    title STRING,
+    language INTEGER,
+    year INTEGER,
+    flag INTEGER,
+    FOREIGN KEY (language) REFERENCES languages(id),
+    FOREIGN KEY (flag) REFERENCES flags(id)
+)
+''')
 
+cur.execute('''INSERT INTO countries(title, language, year, flag) VALUES
+    ("Россия", 2, 1991, 1),
+    ("Китай", 3, 1949, 3),
+    ("США", 1, 1800, 2),
+    ("Великобритания", 1, 1707, 4)
+''')
 
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    ex = Example()
-    ex.show()
-    sys.exit(app.exec())
+con.commit()
+con.close()
