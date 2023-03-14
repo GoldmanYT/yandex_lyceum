@@ -1,36 +1,28 @@
-import argparse
+from yandex_testing_lesson import reverse
+import pytest
 
 
-def format_text_block(frame_height, frame_width, file_name):
-    try:
-        with open(file_name) as f:
-            data = f.read()
-    except Exception as e:
-        return e
-
-    res = ['']
-    for i in data:
-        if i == '\n':
-            if len(res) == frame_height:
-                break
-            else:
-                res.append('')
-        else:
-            if len(res[-1]) < frame_width:
-                res[-1] += i
-            else:
-                if len(res) == frame_height:
-                    break
-                else:
-                    res.append(i)
-
-    return '\n'.join(res)
+def test_empty():
+    assert reverse('') == ''
 
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--frame-height', type=int)
-    parser.add_argument('--frame-width', type=int)
-    parser.add_argument('file_name', type=str)
-    args = parser.parse_args()
-    print(format_text_block(args.frame_height, args.frame_width, args.file_name))
+def test_one_char():
+    assert reverse('a') == 'a'
+
+
+def test_palindrome():
+    assert reverse('aba') == 'aba'
+
+
+def test_str():
+    assert reverse('ab') == 'ba'
+
+
+def test_wrong_type1():
+    with pytest.raises(TypeError):
+        reverse(42)
+
+
+def test_wrong_type2():
+    with pytest.raises(TypeError):
+        reverse([',1', '2,', '3'])
