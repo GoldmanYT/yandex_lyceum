@@ -1,18 +1,16 @@
 import argparse
 
-
 parser = argparse.ArgumentParser()
-parser.add_argument('--sort', action='store_true', default=False)
-parser.add_argument('strs', nargs='*')
+parser.add_argument('--per-day', type=float, default=0)
+parser.add_argument('--per-week', type=float, default=0)
+parser.add_argument('--per-month', type=float, default=0)
+parser.add_argument('--per-year', type=float, default=0)
+parser.add_argument('--get-by', choices=['day', 'month', 'year'], type=str, default='day')
 args = parser.parse_args()
 
-d = {}
-for s in args.strs:
-    key, value = s.split('=')
-    d[key] = value
-
-if args.sort:
-    d = dict(sorted(d.items()))
-
-for key, value in d.items():
-    print(f'Key: {key}	Value: {value}')
+if args.get_by == 'day':
+    print(int(args.per_day + args.per_week / 7 + args.per_month / 30 + args.per_year / 360))
+elif args.get_by == 'month':
+    print(int(args.per_day * 30 + args.per_week * 30 / 7 + args.per_month + args.per_year / 12))
+elif args.get_by == 'year':
+    print(int(args.per_day * 360 + args.per_week * 360 / 7 + args.per_month * 12 + args.per_year))
