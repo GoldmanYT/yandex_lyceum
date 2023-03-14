@@ -1,28 +1,49 @@
-from yandex_testing_lesson import count_chars
+from yandex_testing_lesson import is_under_queen_attack
 import pytest
 
 
-def test_empty():
-    assert count_chars('') == {}
+def test_type1():
+    for pos in (1, 1., [1, 2], ('1', '2'), {}, set()):
+        with pytest.raises(TypeError):
+            is_under_queen_attack(pos, '')
 
 
-def test_one_char():
-    assert count_chars('a') == {'a': 1}
+def test_value1():
+    for pos in ('a0', 'b9', 'abc', 'j5', 'A1', '28'):
+        with pytest.raises(ValueError):
+            is_under_queen_attack(pos, '')
 
 
-def test_palindrome():
-    assert count_chars('aba') == {'a': 2, 'b': 1}
+def test_type2():
+    for pos in (1, 1., [1, 2], ('1', '2'), {}, set()):
+        with pytest.raises(TypeError):
+            is_under_queen_attack('a1', pos)
 
 
-def test_str():
-    assert count_chars('ab') == {'a': 1, 'b': 1}
+def test_value2():
+    for pos in ('a0', 'b9', 'abc', 'j5', 'A1', '28'):
+        with pytest.raises(ValueError):
+            is_under_queen_attack('a1', pos)
 
 
-def test_wrong_type1():
-    with pytest.raises(TypeError):
-        count_chars(42)
+def test_same():
+    assert is_under_queen_attack('a1', 'a1') is True
 
 
-def test_wrong_type2():
-    with pytest.raises(TypeError):
-        count_chars([',1', '2,', '3'])
+def test_horizontal_vertical():
+    for x, y in zip('12345678', 'abcdefgh'):
+        pos = y + x
+        if any(i in 'h1' for i in pos):
+            assert is_under_queen_attack(pos, 'h1') is True
+        else:
+            assert is_under_queen_attack(pos, 'h1') is False
+
+
+def test_diagonal():
+    assert is_under_queen_attack('a1', 'h8') is True
+    assert is_under_queen_attack('a2', 'h8') is False
+    assert is_under_queen_attack('a1', 'h7') is False
+    assert is_under_queen_attack('b1', 'a2') is True
+    assert is_under_queen_attack('c2', 'a3') is False
+    assert is_under_queen_attack('c1', 'a3') is True
+    assert is_under_queen_attack('a7', 'b6') is True
