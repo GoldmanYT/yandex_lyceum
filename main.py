@@ -1,24 +1,21 @@
-import datetime
-import schedule
+import argparse
 
 
-def koo(hours, message='Ку'):
-    hour = datetime.datetime.now().hour
-    if hour in hours:
-        print(message * ((hour - 1) % 12 + 1))
-
-
-a = list(range(24))
-message = input('Введите сообщение: ')
-hours = input('Введите диапазон: ')
-x, y = map(int, hours.split('-'))
-h = x
-while True:
-    a.remove(x)
-    if x == y:
-        break
-    x = (x + 1) % 24
-schedule.every().hour.at('00:00').do(koo, message=message, hours=a)
-
-while True:
-    schedule.run_pending()
+parser = argparse.ArgumentParser()
+parser.add_argument('--count', action='store_true', default=False)
+parser.add_argument('--num', action='store_true', default=False)
+parser.add_argument('--sort', action='store_true', default=False)
+parser.add_argument('source')
+try:
+    args = parser.parse_args()
+    with open(args.source) as f:
+        data = list(map(str.strip, f.readlines()))
+    if args.sort:
+        data.sort()
+    if args.num:
+        data = list(map(lambda x: f'{x[0]} {x[1]}', enumerate(data)))
+    if args.count:
+        data.append(f'rows count: {len(data)}')
+    print('\n'.join(data))
+except Exception as e:
+    print('ERROR')
