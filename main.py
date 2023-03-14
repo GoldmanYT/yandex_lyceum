@@ -1,28 +1,28 @@
-from yandex_testing_lesson import reverse
+from yandex_testing_lesson import count_chars
 import pytest
 
 
 def test_empty():
-    assert reverse('') == ''
+    assert count_chars('') == {}
 
 
 def test_one_char():
-    assert reverse('a') == 'a'
+    assert count_chars('a') == {'a': 1}
 
 
 def test_palindrome():
-    assert reverse('aba') == 'aba'
+    assert count_chars('aba') == {'a': 2, 'b': 1}
 
 
 def test_str():
-    assert reverse('ab') == 'ba'
+    assert count_chars('ab') == {'a': 1, 'b': 1}
 
 
 def test_wrong_type1():
     with pytest.raises(TypeError):
-        reverse(42)
+        count_chars(42)
 
 
 def test_wrong_type2():
     with pytest.raises(TypeError):
-        reverse([',1', '2,', '3'])
+        count_chars([',1', '2,', '3'])
