@@ -14,7 +14,7 @@ d = {
 }
 
 for i, coord in enumerate(coords):
-    url = f'https://static-maps.yandex.ru/1.x/?l=sat&z={d[i]}&ll={coord}'
+    url = f'https://static-maps.yandex.ru/1.x/?l=map&pl={}'
     response = requests.get(url)
     if response:
         with open(f'res{i}.png', 'wb') as f:
