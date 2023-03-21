@@ -1,45 +1,56 @@
 import requests
 import pygame as pg
 from sys import exit
+import math
+
+
+def lonlat_distance(a, b):
+    degree_to_meters_factor = 111 * 1000
+    a_lon, a_lat = a
+    b_lon, b_lat = b
+
+    radians_lattitude = math.radians((a_lat + b_lat) / 2.)
+    lat_lon_factor = math.cos(radians_lattitude)
+
+    dx = abs(a_lon - b_lon) * degree_to_meters_factor * lat_lon_factor
+    dy = abs(a_lat - b_lat) * degree_to_meters_factor
+
+    distance = math.sqrt(dx * dx + dy * dy)
+
+    return distance
+
 
 coords = [
-    '64.796296,54.468172',
-    '-0.554497,51.848595',
-    '-63.984938,-33.867512'
+    (29.913396, 59.891665), (30.221951, 59.918606), (30.259094, 59.917800), (30.282579, 59.933602),
+    (30.314566, 59.939864)
 ]
-d = {
-    0: 16,
-    1: 17,
-    2: 16,
-}
+ans = sum(lonlat_distance(x, y) for x, y in zip(coords, coords[1:]))
+print(ans)
 
-for i, coord in enumerate(coords):
-    url = f'https://static-maps.yandex.ru/1.x/?l=map&pl={}'
-    response = requests.get(url)
-    if response:
-        with open(f'res{i}.png', 'wb') as f:
-            f.write(response.content)
-    else:
-        print(response)
+s = []
+for x, y in coords:
+    s.append(f'{x},{y}')
+s = ','.join(s)
+x, y = coords[len(coords) // 2]
+mark = f'{x},{y}'
+url = f'https://static-maps.yandex.ru/1.x/?l=map&pl={s}&pt={mark}'
+response = requests.get(url)
+if response:
+    with open(f'res.png', 'wb') as f:
+        f.write(response.content)
+else:
+    print(response)
 
 pg.init()
 screen = pg.display.set_mode((600, 450))
 pg.display.flip()
 run = True
-i = 0
 
 while run:
     for event in pg.event.get():
         if event.type == pg.QUIT:
             exit()
             pg.quit()
-        elif event.type == pg.KEYDOWN:
-            if event.key == pg.K_LEFT:
-                i = (i - 1) % len(coords)
-            elif event.key == pg.K_RIGHT:
-                i = (i + 1) % len(coords)
-            else:
-                i = (i + 1) % len(coords)
 
-    screen.blit(pg.image.load(f'res{i}.png'), (0, 0))
+    screen.blit(pg.image.load(f'res.png'), (0, 0))
     pg.display.flip()
